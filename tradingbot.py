@@ -9,7 +9,8 @@ RSI_PERIOD = 14
 OVERSOLD_THRESHOLD = 35
 OVERBOUGHT_THRESHOLD = 70
 TRADE_QUANTITY = 360
-TRADE_SYMBOL = 'ADAUSDT'
+#YOU CAN CHOOSE ANY TRADING PAIR FROM THE BINANCE TRADING LIST
+TRADE_SYMBOL = 'ETHUSDT'
 SOCKET = "wss://stream.binance.com:9443/ws/adausdt@kline_1m"
 
 bought_price = 0
@@ -43,13 +44,11 @@ def on_message(ws,message):
     global closes
     global bought_price
     global in_position
-    #print ("we recieved a message")
     json_message = json.loads(message)
-    #pprint.pprint(json_message)
     candle = json_message['k']
     is_candle_closed = candle['x']
     close = candle['c']
-    #in this part wat we want is to find a good spot to buy ethereum
+    #in this part we want to find a good spot to buy
     if is_candle_closed:
         print('candle closed at:{}'.format(close))
         closes.append(float(close))
@@ -62,13 +61,14 @@ def on_message(ws,message):
             print(last_rsi)
             if last_rsi > OVERBOUGHT_THRESHOLD:
                 if in_position:
-                    #SELL ETHEREUM
+                    #SELL YOUR CRYPTO
                     print('i would sell if i follow rsi strategy only')
                     #order_succided = order(SIDE_SELL,TRADE_QUANTITY,TRADE_SIMBOL)
                     #if orders_succeded:
                     #    in_position = False
                 else:
-                    print('nothing to sell')
+                    pass
+
             elif last_rsi < OVERSOLD_THRESHOLD:
                 if in_position:
                     print('you already own a piece of ethereum')
@@ -77,7 +77,7 @@ def on_message(ws,message):
                     order_succeded = order(SIDE_BUY,TRADE_QUANTITY,TRADE_SYMBOL)
                     bought_price = close
                     if order_succeded:
-                        print('hell fucking yea we have bought eth')
+                        print('we just bought some crypto')
                         in_position = True
             else:
                 print('the prices are not favorable for either sell or buy')
@@ -87,7 +87,7 @@ def on_message(ws,message):
         if float(close) > float(bought_price)*1.012:
             order_succeded = order(SIDE_SELL,TRADE_QUANTITY,TRADE_SYMBOL)
             if order_succeded:
-                print('we just fuckig win fucking money!!!')
+                print('we just win some cash!!!')
                 in_position = False
 
 
