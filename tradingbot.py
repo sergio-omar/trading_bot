@@ -1,5 +1,10 @@
-#Trading bot that gets information from binance and depending on the RSI can
-#buy and sell a pair of arbitrarily selected crypto
+#Trading bot ("toy version") 
+#The following code retrieves information from binance and based on a basic
+#RSI strategy can buy or sell a pair of arbitrarily selected crypto.
+#This code require to  have a config.py file in the same directory 
+#containing the API_KEY and the API_SECRET given by binance in the following format:
+#API_KEY = 'xxxxxxxxxxxxxxxxxxxx....'
+#API_SECRET = 'xxxxxxxxxxxxxxxxx....'
 
 import websocket, json, numpy, talib, pprint, config
 from binance.enums import *
@@ -8,7 +13,7 @@ from binance.client import Client
 RSI_PERIOD = 14
 OVERSOLD_THRESHOLD = 35
 OVERBOUGHT_THRESHOLD = 70
-TRADE_QUANTITY = 360
+TRADE_QUANTITY = .05
 #YOU CAN CHOOSE ANY TRADING PAIR FROM THE BINANCE TRADING LIST
 TRADE_SYMBOL = 'ETHUSDT'
 SOCKET = "wss://stream.binance.com:9443/ws/adausdt@kline_1m"
